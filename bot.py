@@ -19,8 +19,31 @@ def run_discord_bot():
 
     @client.event
     async def on_ready():
+        '''When the bot establishes connection and becomes online'''
+        guild = client.guilds[0]
         print(f'{client.user} is now connected and running!')
+        print(f'I have connected to {guild.name}!')
+        
 
-    client.run(TOKEN)
+    @client.event
+    async def on_message(message):
+        if message.author == client.user:
+            return # To prevent bot replying to itself
+        
+
+        username = str(message.author)
+        user_message = str(message.content)
+        channel = str(message.channel)
+
+        print(f'{username} said {user_message} in guild {channel}')
+        if user_message[0] == '!':
+            await send_message(message=message, user_message=user_message[1:])
+
+        
     
+    client.run(TOKEN)
+
+    
+
+
 
